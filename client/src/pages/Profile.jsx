@@ -28,6 +28,72 @@ const TABS = [
 
 const EMPTY_ADDR = { street: '', city: '', state: '', postalCode: '', country: 'Peru', isPrimary: false }
 
+function AddrForm({ addrForm, setAddrForm, savingAddr, onSave, onCancel, error }) {
+  return (
+    <div className="border border-gray-soft rounded-xl p-4 space-y-3">
+      <input
+        placeholder="Calle y número *"
+        value={addrForm.street}
+        onChange={(e) => setAddrForm((f) => ({ ...f, street: e.target.value }))}
+        className="w-full border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+      />
+      <div className="grid grid-cols-2 gap-3">
+        <input
+          placeholder="Ciudad *"
+          value={addrForm.city}
+          onChange={(e) => setAddrForm((f) => ({ ...f, city: e.target.value }))}
+          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+        />
+        <input
+          placeholder="Departamento"
+          value={addrForm.state}
+          onChange={(e) => setAddrForm((f) => ({ ...f, state: e.target.value }))}
+          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+        />
+        <input
+          placeholder="Código postal"
+          value={addrForm.postalCode}
+          onChange={(e) => setAddrForm((f) => ({ ...f, postalCode: e.target.value }))}
+          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+        />
+        <input
+          placeholder="País"
+          value={addrForm.country}
+          onChange={(e) => setAddrForm((f) => ({ ...f, country: e.target.value }))}
+          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+        />
+      </div>
+      <label className="flex items-center gap-2 text-sm text-gray-carbon cursor-pointer">
+        <input
+          type="checkbox"
+          checked={addrForm.isPrimary}
+          onChange={(e) => setAddrForm((f) => ({ ...f, isPrimary: e.target.checked }))}
+          className="accent-primary"
+        />
+        Usar como dirección principal
+      </label>
+      {error && (
+        <p className="text-xs text-red-600 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
+      )}
+      <div className="flex gap-2">
+        <button
+          onClick={onSave}
+          disabled={savingAddr || !addrForm.street || !addrForm.city}
+          className="text-sm bg-primary text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition disabled:opacity-60 flex items-center gap-1.5"
+        >
+          <Check className="w-3.5 h-3.5" />{savingAddr ? 'Guardando...' : 'Guardar'}
+        </button>
+        <button
+          onClick={onCancel}
+          className="text-sm text-gray-400 hover:text-gray-carbon flex items-center gap-1.5 px-3"
+        >
+          <X className="w-3.5 h-3.5" /> Cancelar
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function Profile() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -56,6 +122,7 @@ export default function Profile() {
   const [addrForm, setAddrForm]       = useState(EMPTY_ADDR)
   const [showAddrForm, setShowAddrForm] = useState(false)
   const [savingAddr, setSavingAddr]   = useState(false)
+  const [addrError, setAddrError]     = useState('')
 
   useEffect(() => {
     if (!isAuthenticated) { navigate('/login'); return }
@@ -107,6 +174,7 @@ export default function Profile() {
   }
 
   const handleSaveAddr = async () => {
+    setAddrError('')
     setSavingAddr(true)
     try {
       if (editingAddr) {
@@ -117,16 +185,21 @@ export default function Profile() {
         }))
         setEditingAddr(null)
       } else {
-        const { data } = await createAddress(addrForm)
-        if (addrForm.isPrimary) {
-          setAddresses((prev) => [...prev.map((a) => ({ ...a, isPrimary: false })), data.data])
-        } else {
-          setAddresses((prev) => [...prev, data.data])
-        }
+        // Primera dirección → siempre principal para que aparezca en checkout
+        const isFirst = addresses.length === 0
+        const payload = { ...addrForm, isPrimary: isFirst || addrForm.isPrimary }
+        const { data } = await createAddress(payload)
+        setAddresses((prev) =>
+          payload.isPrimary
+            ? [...prev.map((a) => ({ ...a, isPrimary: false })), data.data]
+            : [...prev, data.data]
+        )
         setShowAddrForm(false)
       }
       setAddrForm(EMPTY_ADDR)
-    } catch { } finally { setSavingAddr(false) }
+    } catch (err) {
+      setAddrError(err?.response?.data?.error || 'No se pudo guardar la dirección. Verifica que el servidor esté activo.')
+    } finally { setSavingAddr(false) }
   }
 
   const handleDeleteAddr = async (id) => {
@@ -149,68 +222,6 @@ export default function Profile() {
       </div>
     )
   }
-
-  // ── Address form UI ──────────────────────────────────────────
-  const AddrForm = ({ onCancel }) => (
-    <div className="border border-gray-soft rounded-xl p-4 space-y-3">
-      <input
-        placeholder="Calle y número *"
-        value={addrForm.street}
-        onChange={(e) => setAddrForm((f) => ({ ...f, street: e.target.value }))}
-        className="w-full border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-      />
-      <div className="grid grid-cols-2 gap-3">
-        <input
-          placeholder="Ciudad *"
-          value={addrForm.city}
-          onChange={(e) => setAddrForm((f) => ({ ...f, city: e.target.value }))}
-          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-        />
-        <input
-          placeholder="Departamento"
-          value={addrForm.state}
-          onChange={(e) => setAddrForm((f) => ({ ...f, state: e.target.value }))}
-          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-        />
-        <input
-          placeholder="Código postal"
-          value={addrForm.postalCode}
-          onChange={(e) => setAddrForm((f) => ({ ...f, postalCode: e.target.value }))}
-          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-        />
-        <input
-          placeholder="País"
-          value={addrForm.country}
-          onChange={(e) => setAddrForm((f) => ({ ...f, country: e.target.value }))}
-          className="border border-gray-soft rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-        />
-      </div>
-      <label className="flex items-center gap-2 text-sm text-gray-carbon cursor-pointer">
-        <input
-          type="checkbox"
-          checked={addrForm.isPrimary}
-          onChange={(e) => setAddrForm((f) => ({ ...f, isPrimary: e.target.checked }))}
-          className="accent-primary"
-        />
-        Usar como dirección principal
-      </label>
-      <div className="flex gap-2">
-        <button
-          onClick={handleSaveAddr}
-          disabled={savingAddr || !addrForm.street || !addrForm.city}
-          className="text-sm bg-primary text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition disabled:opacity-60 flex items-center gap-1.5"
-        >
-          <Check className="w-3.5 h-3.5" />{savingAddr ? 'Guardando...' : 'Guardar'}
-        </button>
-        <button
-          onClick={() => { onCancel(); setAddrForm(EMPTY_ADDR) }}
-          className="text-sm text-gray-400 hover:text-gray-carbon flex items-center gap-1.5 px-3"
-        >
-          <X className="w-3.5 h-3.5" /> Cancelar
-        </button>
-      </div>
-    </div>
-  )
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
@@ -381,7 +392,12 @@ export default function Profile() {
 
               {showAddrForm && !editingAddr && (
                 <div className="mb-4">
-                  <AddrForm onCancel={() => setShowAddrForm(false)} />
+                  <AddrForm
+                    addrForm={addrForm} setAddrForm={setAddrForm}
+                    savingAddr={savingAddr} onSave={handleSaveAddr}
+                    error={addrError}
+                    onCancel={() => { setShowAddrForm(false); setAddrForm(EMPTY_ADDR); setAddrError('') }}
+                  />
                 </div>
               )}
 
@@ -395,7 +411,12 @@ export default function Profile() {
                   {addresses.map((addr) => (
                     <div key={addr.id}>
                       {editingAddr === addr.id ? (
-                        <AddrForm onCancel={() => setEditingAddr(null)} />
+                        <AddrForm
+                          addrForm={addrForm} setAddrForm={setAddrForm}
+                          savingAddr={savingAddr} onSave={handleSaveAddr}
+                          error={addrError}
+                          onCancel={() => { setEditingAddr(null); setAddrForm(EMPTY_ADDR); setAddrError('') }}
+                        />
                       ) : (
                         <div className={`border rounded-xl p-4 ${addr.isPrimary ? 'border-primary' : 'border-gray-soft'}`}>
                           <div className="flex items-start justify-between">

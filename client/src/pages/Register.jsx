@@ -44,10 +44,10 @@ export default function Register() {
       {/* Panel izquierdo */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-purple-200 via-purple-300 to-purple-500 flex-col justify-center p-14">
         <h2 className="text-4xl font-bold text-primary leading-tight mb-4">
-          Crea algo<br />extraordinario.
+          Escribe,<br />colorea y<br />organiza.
         </h2>
         <p className="text-gray-carbon text-sm leading-relaxed max-w-sm">
-          Únete a la comunidad de Teylo y organiza tu mundo con el toque de color que merece tu creatividad.
+          Únete a miles de estudiantes y creativos que confían en Teylo para sus útiles escolares, de oficina y arte.
         </p>
       </div>
 
@@ -56,7 +56,7 @@ export default function Register() {
         <div className="w-full max-w-md">
           <span className="text-primary font-bold text-lg block mb-1">Teylo</span>
           <h1 className="text-2xl font-bold text-gray-carbon mb-1">Crear una cuenta</h1>
-          <p className="text-sm text-gray-400 mb-7">Empieza tu viaje creativo hoy mismo.</p>
+          <p className="text-sm text-gray-400 mb-7">Accede a los mejores útiles de librería en un solo lugar.</p>
 
           {error && (
             <div className="mb-5 px-4 py-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded">
@@ -194,7 +194,7 @@ export default function Register() {
           </p>
 
           <p className="text-center text-xs text-gray-300 mt-3">
-            Al registrarte, aceptas nuestros Términos de Servicio y Política de Privacidad.
+            Al registrarte aceptas nuestros Términos de Servicio y Política de Privacidad. © 2025 Teylo.
           </p>
         </div>
       </div>

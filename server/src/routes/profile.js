@@ -91,8 +91,9 @@ router.post('/addresses', authMiddleware, async (req, res) => {
       },
     })
     res.status(201).json({ data: address, message: 'Dirección agregada' })
-  } catch {
-    res.status(500).json({ error: 'Error al agregar dirección' })
+  } catch (e) {
+    console.error('[POST /addresses]', e)
+    res.status(500).json({ error: e?.message || 'Error al agregar dirección' })
   }
 })
 

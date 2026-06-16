@@ -36,8 +36,8 @@ export default function Login() {
         <span className="text-white text-xl font-bold tracking-wide">Teylo</span>
         <div>
           <p className="text-white/80 text-sm leading-relaxed max-w-xs">
-            Donde la organización se encuentra con la creatividad.
-            Tu próximo gran trazo comienza aquí.
+            Lapiceros, cuadernos, borradores, plumones y más.
+            Tu librería favorita, siempre a un clic de distancia.
           </p>
           <div className="flex gap-3 mt-5">
             <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs">f</span>
@@ -50,7 +50,7 @@ export default function Login() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white-paper">
         <div className="w-full max-w-md">
           <h1 className="text-2xl font-bold text-gray-carbon mb-1">Bienvenido de nuevo</h1>
-          <p className="text-sm text-gray-400 mb-7">Ingresa tus credenciales para continuar.</p>
+          <p className="text-sm text-gray-400 mb-7">Ingresa para ver tus pedidos y útiles favoritos.</p>
 
           {error && (
             <div className="mb-5 px-4 py-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded">
@@ -146,7 +146,7 @@ export default function Login() {
           </p>
 
           <p className="text-center text-xs text-gray-300 mt-4">
-            © 2024 Teylo. Creatividad en cada trazo.
+            © 2025 Teylo. Tu librería de confianza.
           </p>
         </div>
       </div>

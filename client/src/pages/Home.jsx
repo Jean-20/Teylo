@@ -6,23 +6,23 @@ import { getFeaturedProducts } from '../api/products.js'
 import { getImageUrl } from '../utils/getImageUrl.js'
 import ProductCard from '../components/ui/ProductCard.jsx'
 
-const CAT_ORDER = ['cuadernos', 'boligrafos', 'arte', 'organizacion']
+const CAT_ORDER = ['escolar', 'arte-diseno', 'universitario', 'manualidades']
 
 // Banner de picsum — siempre carga, sin dependencias locales
-const HERO_IMG  = 'https://picsum.photos/seed/teylo-hero/1200/700'
-const OFERTA_IMG = 'https://picsum.photos/seed/teylo-oferta/600/400'
+const HERO_IMG = 'https://static.vecteezy.com/system/resources/thumbnails/080/489/100/small/colored-acrylic-markers-for-creativity-and-notebooks-on-the-table-top-view-photo.jpg'
+const OFERTA_IMG = 'https://static.vecteezy.com/system/resources/thumbnails/077/708/450/small/colorful-marker-set-arranged-in-rainbow-order-on-white-stand-free-photo.jpg'
 
 export default function Home() {
-  const [categories, setCategories]           = useState([])
+  const [categories, setCategories] = useState([])
   const [featuredProducts, setFeaturedProducts] = useState([])
-  const [loading, setLoading]                 = useState(true)
+  const [loading, setLoading] = useState(true)
   const [loadingFeatured, setLoadingFeatured] = useState(true)
 
   useEffect(() => {
     Promise.all([getCategories(), getFeaturedProducts()])
       .then(([catRes, featRes]) => {
         const parents = catRes.data.data.filter((c) => !c.parentId)
-        const sorted  = CAT_ORDER.map((slug) => parents.find((c) => c.slug === slug)).filter(Boolean)
+        const sorted = CAT_ORDER.map((slug) => parents.find((c) => c.slug === slug)).filter(Boolean)
         setCategories(sorted)
         setFeaturedProducts(featRes.data.data || [])
       })
@@ -52,7 +52,7 @@ export default function Home() {
                 Creatividad en<br />cada trazo.
               </h1>
               <p className="text-white/80 text-sm mb-6 max-w-xs">
-                Descubre la colección más exclusiva de suministros para inspirar tus mejores ideas.
+                Lapiceros, cuadernos, plumones, colores y más — todo lo que necesitas para estudiar, crear y organizar.
               </p>
               <div className="flex gap-3">
                 <Link
@@ -90,8 +90,8 @@ export default function Home() {
               </div>
               <BookOpen className="w-7 h-7 text-primary mb-3" />
               <div>
-                <h3 className="text-gray-carbon font-bold text-xl leading-tight">Inspiración Semanal</h3>
-                <p className="text-gray-400 text-xs mt-1">Suscríbete a nuestro blog creativo</p>
+                <h3 className="text-gray-carbon font-bold text-xl leading-tight">Útiles de Calidad</h3>
+                <p className="text-gray-400 text-xs mt-1">Marcas líderes en papelería y librería</p>
               </div>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function Home() {
         <div className="flex items-end justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-carbon">Productos Destacados</h2>
-            <p className="text-sm text-gray-400 mt-1">Lo más amado por nuestra comunidad</p>
+            <p className="text-sm text-gray-400 mt-1">Los favoritos de estudiantes y creativos</p>
           </div>
           <Link to="/productos" className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
             Ver Todos <ArrowRight className="w-4 h-4" />
@@ -186,20 +186,20 @@ export default function Home() {
 
       {/* ── Banner Oferta Especial ────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-6 py-6 pb-14">
-        <div className="bg-gray-soft rounded-2xl overflow-hidden flex flex-col md:flex-row items-center">
+        <div className="bg-violet-600 rounded-2xl overflow-hidden flex flex-col md:flex-row items-center">
           <div className="flex-1 p-10 md:p-12">
-            <span className="inline-block bg-primary text-white text-xs font-medium px-3 py-1 rounded-full mb-5">
+            <span className="inline-block bg-white text-black text-xs font-medium px-3 py-1 rounded-full mb-5">
               Oferta Especial
             </span>
-            <h2 className="text-4xl font-bold text-gray-carbon leading-tight mb-4">
-              Dale color a<br />tus notas.
+            <h2 className="text-4xl font-bold text-white leading-tight mb-4">
+              Dale vida<br />a tus ideas.
             </h2>
-            <p className="text-sm text-gray-carbon/80 mb-7 max-w-sm leading-relaxed">
-              Obtén un 20% de descuento en toda la colección de resaltadores y plumones durante este mes.
+            <p className="text-sm text-white mb-7 max-w-sm leading-relaxed">
+              20% de descuento en plumones, colores y resaltadores. Pinta, subraya y destaca todo lo que importa.
             </p>
             <Link
               to="/categorias?category=arte"
-              className="inline-block bg-primary text-white px-6 py-2.5 rounded text-sm font-medium hover:bg-purple-700 transition"
+              className="border border-white text-white px-5 py-2.5 rounded text-sm font-medium hover:bg-white/10 transition"
             >
               Comprar Ahora
             </Link>

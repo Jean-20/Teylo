@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MapPin, Truck, CreditCard, ChevronDown, Check, Plus } from 'lucide-react'
+import { MapPin, Truck, CreditCard, ChevronDown, Check, Plus, CheckCircle2, ShoppingBag } from 'lucide-react'
 import { getAddresses, createAddress } from '../api/profile.js'
 import { createOrder } from '../api/orders.js'
 import { getImageUrl } from '../utils/getImageUrl.js'
@@ -42,6 +42,8 @@ export default function Checkout() {
 
   const [placing, setPlacing]     = useState(false)
   const [error, setError]         = useState('')
+  const [confirmed, setConfirmed] = useState(false)
+  const [errors, setErrors]       = useState({})
 
   useEffect(() => {
     if (!isAuthenticated) { navigate('/login'); return }
@@ -73,13 +75,18 @@ export default function Checkout() {
   }
 
   const handleConfirm = async () => {
-    if (!selectedAddr) { setError('Selecciona una dirección de envío.'); return }
-    setPlacing(true)
+    const newErrors = {}
+    if (!selectedAddr)                        newErrors.addr    = 'Debes seleccionar una dirección de envío.'
+    if (!shipping)                            newErrors.ship    = 'Debes seleccionar un método de envío.'
+    if (!payment)                             newErrors.pay     = 'Debes seleccionar un método de pago.'
+    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return }
+    setErrors({})
     setError('')
+    setPlacing(true)
     try {
       await createOrder(selectedAddr)
       storeClearCart()
-      navigate('/perfil?tab=pedidos')
+      setConfirmed(true)
     } catch (err) {
       setError(err?.response?.data?.error || 'Error al confirmar el pedido.')
     } finally { setPlacing(false) }
@@ -87,6 +94,38 @@ export default function Checkout() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
+
+      {/* ── Modal de confirmación ────────────────────────────── */}
+      {confirmed && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center animate-fadeInScale">
+            <div className="flex justify-center mb-5">
+              <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
+                <CheckCircle2 className="w-11 h-11 text-green-500" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-carbon mb-2">¡Pago confirmado!</h2>
+            <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+              Tu pedido fue recibido con éxito.<br />Puedes rastrearlo desde tu perfil.
+            </p>
+            <div className="flex flex-col gap-2.5">
+              <button
+                onClick={() => navigate('/perfil?tab=pedidos')}
+                className="w-full bg-primary text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-purple-700 transition flex items-center justify-center gap-2"
+              >
+                <ShoppingBag className="w-4 h-4" /> Ver mis pedidos
+              </button>
+              <button
+                onClick={() => navigate('/')}
+                className="w-full border border-gray-soft text-gray-carbon py-2.5 rounded-xl text-sm font-medium hover:bg-gray-soft transition"
+              >
+                Seguir comprando
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold text-gray-carbon mb-8">Finalizar compra</h1>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -94,10 +133,13 @@ export default function Checkout() {
         <div className="flex-1 space-y-6">
 
           {/* 1. Dirección */}
-          <section className="border border-gray-soft rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <MapPin className="w-4 h-4 text-primary" />
-              <h2 className="font-bold text-gray-carbon">Dirección de envío</h2>
+          <section className={`border rounded-xl p-5 transition ${errors.addr ? 'border-red-400' : 'border-gray-soft'}`}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-primary" />
+                <h2 className="font-bold text-gray-carbon">Dirección de envío <span className="text-red-500">*</span></h2>
+              </div>
+              {errors.addr && <span className="text-xs text-red-500">{errors.addr}</span>}
             </div>
 
             {addresses.length > 0 && (
@@ -186,10 +228,13 @@ export default function Checkout() {
           </section>
 
           {/* 2. Método de envío */}
-          <section className="border border-gray-soft rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <Truck className="w-4 h-4 text-primary" />
-              <h2 className="font-bold text-gray-carbon">Método de envío</h2>
+          <section className={`border rounded-xl p-5 transition ${errors.ship ? 'border-red-400' : 'border-gray-soft'}`}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Truck className="w-4 h-4 text-primary" />
+                <h2 className="font-bold text-gray-carbon">Método de envío <span className="text-red-500">*</span></h2>
+              </div>
+              {errors.ship && <span className="text-xs text-red-500">{errors.ship}</span>}
             </div>
             <div className="space-y-2">
               {SHIPPING_METHODS.map((m) => (
@@ -218,10 +263,13 @@ export default function Checkout() {
           </section>
 
           {/* 3. Método de pago */}
-          <section className="border border-gray-soft rounded-xl overflow-hidden">
-            <div className="flex items-center gap-2 p-5 pb-3">
-              <CreditCard className="w-4 h-4 text-primary" />
-              <h2 className="font-bold text-gray-carbon">Método de pago</h2>
+          <section className={`border rounded-xl overflow-hidden transition ${errors.pay ? 'border-red-400' : 'border-gray-soft'}`}>
+            <div className="flex items-center justify-between p-5 pb-3">
+              <div className="flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-primary" />
+                <h2 className="font-bold text-gray-carbon">Método de pago <span className="text-red-500">*</span></h2>
+              </div>
+              {errors.pay && <span className="text-xs text-red-500">{errors.pay}</span>}
             </div>
             {PAYMENT_METHODS.map((m, i) => (
               <div key={m.id} className={`border-t border-gray-soft ${i === 0 ? 'border-t-0' : ''}`}>
@@ -310,6 +358,13 @@ export default function Checkout() {
             </button>
 
             <p className="text-xs text-center text-gray-400 mt-2">Pago simulado — no se realizará ningún cobro real.</p>
+
+            <button
+              onClick={() => navigate('/carrito')}
+              className="mt-3 w-full text-sm text-gray-400 hover:text-gray-carbon py-2 transition text-center"
+            >
+              Cancelar y volver al carrito
+            </button>
           </div>
         </div>
       </div>
