@@ -11,6 +11,7 @@ export default function Catalogo() {
   const [activeSlug, setActiveSlug] = useState('')
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [imgErrors, setImgErrors] = useState(new Set())
 
   useEffect(() => {
     getCategories().then(({ data }) => {
@@ -48,12 +49,12 @@ export default function Catalogo() {
                       ? 'bg-primary/10 text-primary'
                       : 'text-gray-carbon hover:bg-gray-soft'}`}
                 >
-                  {cat.imageUrl ? (
+                  {cat.imageUrl && !imgErrors.has(cat.slug) ? (
                     <img
                       src={getImageUrl(cat.imageUrl)}
                       alt={cat.name}
                       className="w-8 h-8 rounded object-cover shrink-0"
-                      onError={(e) => { e.currentTarget.style.display = 'none' }}
+                      onError={() => setImgErrors((prev) => new Set([...prev, cat.slug]))}
                     />
                   ) : (
                     <div className="w-8 h-8 rounded bg-gray-soft shrink-0 flex items-center justify-center">
