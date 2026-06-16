@@ -65,7 +65,7 @@ export default function ProductCard({ product }) {
           )}
 
           {/* Badge descuento — arriba izquierda */}
-          {discount >= 5 && (
+          {discount >= 5 && product.originalPrice > product.price && (
             <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
               -{discount}%
             </span>
@@ -102,17 +102,20 @@ export default function ProductCard({ product }) {
               <p className="text-[10px] text-gray-400 font-medium mb-0.5">{product.brand.name}</p>
             )}
             <p className="font-semibold text-sm text-gray-carbon truncate">{product.name}</p>
-            {product.reviewCount > 0 && (
+            {product.reviewCount > 0 && product.avgRating != null && (
               <div className="flex items-center gap-1 mt-0.5">
                 <span className="text-yellow-400 text-xs leading-none">
-                  {'★'.repeat(Math.round(product.avgRating))}{'☆'.repeat(5 - Math.round(product.avgRating))}
+                  {(() => {
+                    const s = Math.min(5, Math.max(0, Math.round(product.avgRating)))
+                    return '★'.repeat(s) + '☆'.repeat(5 - s)
+                  })()}
                 </span>
                 <span className="text-[10px] text-gray-400">({product.reviewCount})</span>
               </div>
             )}
             <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-bold text-primary">{formatPrice(product.price)}</span>
-              {product.originalPrice && (
+              {product.originalPrice && product.originalPrice > product.price && (
                 <span className="text-xs text-gray-400 line-through">{formatPrice(product.originalPrice)}</span>
               )}
             </div>
