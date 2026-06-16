@@ -11,7 +11,7 @@ export default function Catalogo() {
   const [categories, setCategories] = useState([])
   const [activeSlug, setActiveSlug] = useState('')
   const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [imgErrors, setImgErrors] = useState(new Set())
 
   useEffect(() => {
@@ -25,6 +25,8 @@ export default function Catalogo() {
           setActiveSlug(paramSlug)
         } else if (parents.length > 0) {
           setActiveSlug(parents[0].slug)
+        } else {
+          setLoading(false)
         }
       })
       .catch(() => setLoading(false))

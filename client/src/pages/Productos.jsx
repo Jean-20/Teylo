@@ -137,6 +137,7 @@ export default function Productos() {
       })
     return () => controller.abort()
   }, [brand, maxPrice, minRating, sort, page, category])
+
   useEffect(() => {
     getBrands().then(({ data }) => setBrands(data.data))
   }, [])
