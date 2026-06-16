@@ -1,0 +1,92 @@
+<h2>¿Cómo debe verse el Catálogo?</h2>
+<p class="subtitle">Esta es la página de <strong>descubrimiento</strong> — el usuario llega sin saber qué quiere. Elige el layout que mejor orienta visualmente.</p>
+
+<div class="cards">
+
+  <!-- Opción A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f7ff;padding:16px;border-radius:8px 8px 0 0">
+      <!-- Hero de categorías -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="background:#7c3aed;border-radius:6px;height:56px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600">📝 Escritura</div>
+        <div style="background:#6d28d9;border-radius:6px;height:56px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600">📒 Cuadernos</div>
+        <div style="background:#5b21b6;border-radius:6px;height:56px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600">🎨 Arte</div>
+        <div style="background:#4c1d95;border-radius:6px;height:56px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600">🗂 Organización</div>
+      </div>
+      <!-- Destacados debajo -->
+      <div style="font-size:9px;color:#6b7280;margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Destacados</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">
+        <div style="background:#e9d5ff;border-radius:4px;height:36px"></div>
+        <div style="background:#e9d5ff;border-radius:4px;height:36px"></div>
+        <div style="background:#e9d5ff;border-radius:4px;height:36px"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Vitrina de categorías</h3>
+      <p>Tarjetas grandes por categoría arriba, productos destacados abajo. El usuario navega primero por área de interés, luego explora.</p>
+    </div>
+  </div>
+
+  <!-- Opción B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f7ff;padding:16px;border-radius:8px 8px 0 0">
+      <!-- Banner -->
+      <div style="background:linear-gradient(135deg,#7c3aed,#4c1d95);border-radius:6px;height:48px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;margin-bottom:8px">🎒 "Todo para tu creatividad"</div>
+      <!-- Tabs de categoría -->
+      <div style="display:flex;gap:4px;margin-bottom:8px;overflow:hidden">
+        <div style="background:#7c3aed;color:#fff;border-radius:20px;font-size:9px;padding:3px 8px;white-space:nowrap">Escritura</div>
+        <div style="background:#f3f4f6;color:#374151;border-radius:20px;font-size:9px;padding:3px 8px;white-space:nowrap">Cuadernos</div>
+        <div style="background:#f3f4f6;color:#374151;border-radius:20px;font-size:9px;padding:3px 8px;white-space:nowrap">Arte</div>
+        <div style="background:#f3f4f6;color:#374151;border-radius:20px;font-size:9px;padding:3px 8px;white-space:nowrap">Org.</div>
+      </div>
+      <!-- Grid filtrado -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">
+        <div style="background:#ddd6fe;border-radius:4px;height:42px"></div>
+        <div style="background:#ddd6fe;border-radius:4px;height:42px"></div>
+        <div style="background:#ddd6fe;border-radius:4px;height:42px"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Banner + pestañas</h3>
+      <p>Hero editorial arriba, pestañas de categoría que filtran el grid en tiempo real. Visual y rápido de navegar.</p>
+    </div>
+  </div>
+
+  <!-- Opción C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f7ff;padding:16px;border-radius:8px 8px 0 0">
+      <div style="display:grid;grid-template-columns:80px 1fr;gap:8px;height:120px">
+        <!-- Sidebar visual -->
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="background:#7c3aed;border-radius:4px;height:24px;display:flex;align-items:center;padding:0 6px">
+            <span style="color:#fff;font-size:8px">✏️ Esc.</span>
+          </div>
+          <div style="background:#f3f4f6;border-radius:4px;height:24px;display:flex;align-items:center;padding:0 6px">
+            <span style="color:#6b7280;font-size:8px">📒 Cua.</span>
+          </div>
+          <div style="background:#f3f4f6;border-radius:4px;height:24px;display:flex;align-items:center;padding:0 6px">
+            <span style="color:#6b7280;font-size:8px">🎨 Arte</span>
+          </div>
+          <div style="background:#f3f4f6;border-radius:4px;height:24px;display:flex;align-items:center;padding:0 6px">
+            <span style="color:#6b7280;font-size:8px">🗂 Org.</span>
+          </div>
+        </div>
+        <!-- Área de productos -->
+        <div>
+          <div style="font-size:9px;color:#7c3aed;font-weight:600;margin-bottom:5px">Escritura & Plumones</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:5px">
+            <div style="background:#ede9fe;border-radius:4px;height:40px"></div>
+            <div style="background:#ede9fe;border-radius:4px;height:40px"></div>
+            <div style="background:#ede9fe;border-radius:4px;height:40px"></div>
+            <div style="background:#ede9fe;border-radius:4px;height:40px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Categoría lateral + productos</h3>
+      <p>Sidebar de categorías siempre visible, área derecha muestra los productos de la categoría activa. Layout clásico de e-commerce.</p>
+    </div>
+  </div>
+
+</div>

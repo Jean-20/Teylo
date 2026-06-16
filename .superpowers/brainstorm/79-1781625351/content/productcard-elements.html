@@ -1,0 +1,40 @@
+<h2>¿Qué mostramos en las tarjetas de producto?</h2>
+<p class="subtitle">Selecciona todos los elementos que quieres agregar. Los datos ya existen en la API — solo hay que mostrarlos.</p>
+
+<div class="options" data-multiselect>
+
+  <div class="option" data-choice="rating" onclick="toggleSelect(this)">
+    <div class="letter">★</div>
+    <div class="content">
+      <h3>Rating + reviews</h3>
+      <p>Mostrar <strong>★ 4.5 (12)</strong> bajo el nombre. Ya viene en <code>avgRating</code> y <code>reviewCount</code>. Es la señal de confianza más importante para decidir.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="discount" onclick="toggleSelect(this)">
+    <div class="letter">%</div>
+    <div class="content">
+      <h3>Badge de descuento</h3>
+      <p>Cuando hay <code>originalPrice</code>, calcular y mostrar <strong>"-23%"</strong> como badge rojo sobre la imagen. Hoy solo se ve el precio tachado y pasa desapercibido.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="brand" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Nombre de marca</h3>
+      <p>Mostrar <strong>Muji · Staedtler</strong> en gris pequeño sobre el nombre del producto. Muy importante para quienes compran por marca.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="stock" onclick="toggleSelect(this)">
+    <div class="letter">!</div>
+    <div class="content">
+      <h3>Alerta de stock bajo</h3>
+      <p>Si <code>stock &lt; 10</code>, mostrar <strong>"¡Últimas X unidades!"</strong> en rojo. Genera urgencia real y es información honesta.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:24px">Puedes seleccionar varios. Luego te muestro cómo quedan visualmente.</p>

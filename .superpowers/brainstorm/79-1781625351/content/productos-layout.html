@@ -1,0 +1,139 @@
+<h2>¿Cómo debe verse Productos?</h2>
+<p class="subtitle">Esta es la página de <strong>decisión de compra</strong> — el usuario ya sabe qué busca. Necesita filtrar, comparar y decidir.</p>
+
+<div class="cards">
+
+  <!-- Opción A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f7ff;padding:16px;border-radius:8px 8px 0 0">
+      <div style="display:grid;grid-template-columns:72px 1fr;gap:8px">
+        <!-- Sidebar filtros -->
+        <div>
+          <div style="font-size:8px;font-weight:700;color:#374151;margin-bottom:4px">FILTROS</div>
+          <!-- Chips activos -->
+          <div style="background:#ede9fe;border-radius:3px;font-size:7px;color:#7c3aed;padding:2px 4px;margin-bottom:6px">Muji ×</div>
+          <div style="font-size:7px;color:#6b7280;margin-bottom:2px">Marca</div>
+          <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:5px">
+            <div style="display:flex;align-items:center;gap:2px"><div style="width:6px;height:6px;border-radius:50%;background:#7c3aed"></div><span style="font-size:7px">Muji</span></div>
+            <div style="display:flex;align-items:center;gap:2px"><div style="width:6px;height:6px;border-radius:50%;border:1px solid #d1d5db"></div><span style="font-size:7px">Staedtler</span></div>
+          </div>
+          <div style="font-size:7px;color:#6b7280;margin-bottom:2px">Precio</div>
+          <div style="height:3px;background:#e5e7eb;border-radius:2px;margin-bottom:5px"><div style="width:60%;height:100%;background:#7c3aed;border-radius:2px"></div></div>
+          <div style="font-size:7px;color:#6b7280;margin-bottom:2px">Rating</div>
+          <div style="font-size:8px;color:#f59e0b">★★★★☆</div>
+        </div>
+        <!-- Grid + header -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span style="font-size:8px;color:#6b7280">16 productos</span>
+            <div style="display:flex;gap:3px">
+              <div style="background:#7c3aed;border-radius:3px;padding:2px 4px;font-size:7px;color:#fff">⊞</div>
+              <div style="background:#f3f4f6;border-radius:3px;padding:2px 4px;font-size:7px;color:#6b7280">≡</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:5px">
+            <div style="background:#ddd6fe;border-radius:4px;height:44px;position:relative">
+              <div style="position:absolute;top:2px;right:2px;background:#ef4444;border-radius:2px;font-size:6px;color:#fff;padding:1px 3px">-20%</div>
+              <div style="position:absolute;bottom:2px;left:2px;font-size:6px;color:#7c3aed;font-weight:600">S/24.9</div>
+            </div>
+            <div style="background:#ddd6fe;border-radius:4px;height:44px;position:relative">
+              <div style="position:absolute;bottom:2px;left:2px;font-size:6px;color:#dc2626;font-weight:600">¡Últimas 3!</div>
+            </div>
+            <div style="background:#ddd6fe;border-radius:4px;height:44px"></div>
+            <div style="background:#ddd6fe;border-radius:4px;height:44px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Sidebar + grid/lista toggle</h3>
+      <p>Filtros en sidebar, chips de filtros activos visibles arriba del grid, toggle cuadrícula/lista, badge de descuento y stock bajo en cards. Máxima información.</p>
+    </div>
+  </div>
+
+  <!-- Opción B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f7ff;padding:16px;border-radius:8px 8px 0 0">
+      <!-- Barra de filtros horizontal -->
+      <div style="display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap">
+        <div style="background:#7c3aed;color:#fff;border-radius:4px;font-size:8px;padding:3px 7px">Marca ▾</div>
+        <div style="background:#f3f4f6;color:#374151;border-radius:4px;font-size:8px;padding:3px 7px">Precio ▾</div>
+        <div style="background:#f3f4f6;color:#374151;border-radius:4px;font-size:8px;padding:3px 7px">Rating ▾</div>
+        <div style="background:#ede9fe;color:#7c3aed;border-radius:4px;font-size:8px;padding:3px 7px">Muji ×</div>
+      </div>
+      <!-- Grid full width -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">
+        <div style="background:#ddd6fe;border-radius:4px;height:48px;position:relative">
+          <div style="position:absolute;top:2px;right:2px;background:#ef4444;border-radius:2px;font-size:6px;color:#fff;padding:1px 3px">-20%</div>
+        </div>
+        <div style="background:#ddd6fe;border-radius:4px;height:48px"></div>
+        <div style="background:#ddd6fe;border-radius:4px;height:48px;position:relative">
+          <div style="position:absolute;bottom:2px;left:2px;font-size:6px;color:#dc2626;font-weight:600">¡Últimas 2!</div>
+        </div>
+        <div style="background:#ddd6fe;border-radius:4px;height:48px"></div>
+        <div style="background:#ddd6fe;border-radius:4px;height:48px"></div>
+        <div style="background:#ddd6fe;border-radius:4px;height:48px"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Filtros en barra horizontal</h3>
+      <p>Sin sidebar, los filtros van en dropdowns arriba del grid. Más espacio horizontal para los productos. Mejor para móvil.</p>
+    </div>
+  </div>
+
+  <!-- Opción C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8f7ff;padding:16px;border-radius:8px 8px 0 0">
+      <div style="display:grid;grid-template-columns:72px 1fr;gap:8px">
+        <!-- Sidebar -->
+        <div>
+          <div style="font-size:7px;font-weight:700;color:#374151;margin-bottom:4px">FILTROS</div>
+          <div style="font-size:7px;color:#6b7280;margin-bottom:2px">Marca</div>
+          <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:5px">
+            <div style="display:flex;align-items:center;gap:2px"><div style="width:6px;height:6px;border-radius:50%;background:#7c3aed"></div><span style="font-size:7px;color:#7c3aed;font-weight:600">Muji</span></div>
+            <div style="display:flex;align-items:center;gap:2px"><div style="width:6px;height:6px;border-radius:50%;border:1px solid #d1d5db"></div><span style="font-size:7px">Staedtler</span></div>
+          </div>
+          <div style="font-size:7px;color:#6b7280;margin-bottom:2px">Precio</div>
+          <div style="height:3px;background:#e5e7eb;border-radius:2px;margin-bottom:5px"><div style="width:60%;height:100%;background:#7c3aed;border-radius:2px"></div></div>
+        </div>
+        <!-- Vista lista -->
+        <div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:5px">16 productos</div>
+          <!-- Fila lista -->
+          <div style="background:#fff;border:1px solid #e5e7eb;border-radius:5px;padding:5px;display:flex;gap:5px;margin-bottom:4px;align-items:center">
+            <div style="background:#ede9fe;border-radius:3px;width:28px;height:28px;shrink:0"></div>
+            <div style="flex:1">
+              <div style="font-size:7px;font-weight:600;color:#111">Cuaderno Premium</div>
+              <div style="font-size:6px;color:#f59e0b">★★★★☆ (12)</div>
+              <div style="font-size:7px;color:#7c3aed;font-weight:700">S/34.9</div>
+            </div>
+            <div style="background:#7c3aed;border-radius:3px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px">+</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e5e7eb;border-radius:5px;padding:5px;display:flex;gap:5px;margin-bottom:4px;align-items:center">
+            <div style="background:#ede9fe;border-radius:3px;width:28px;height:28px;shrink:0"></div>
+            <div style="flex:1">
+              <div style="font-size:7px;font-weight:600;color:#111">Set Plumones Muji</div>
+              <div style="font-size:6px;color:#f59e0b">★★★★★ (8)</div>
+              <div style="font-size:7px;color:#7c3aed;font-weight:700">S/18.5 <span style="color:#9ca3af;text-decoration:line-through;font-weight:400">S/24</span></div>
+            </div>
+            <div style="background:#7c3aed;border-radius:3px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px">+</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e5e7eb;border-radius:5px;padding:5px;display:flex;gap:5px;align-items:center">
+            <div style="background:#ede9fe;border-radius:3px;width:28px;height:28px;shrink:0"></div>
+            <div style="flex:1">
+              <div style="font-size:7px;font-weight:600;color:#111">Estuche Mesh</div>
+              <div style="font-size:6px;color:#dc2626;font-weight:600">¡Últimas 3!</div>
+              <div style="font-size:7px;color:#7c3aed;font-weight:700">S/12.5</div>
+            </div>
+            <div style="background:#7c3aed;border-radius:3px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Sidebar + vista lista por defecto</h3>
+      <p>Sidebar de filtros igual que Catálogo, pero el grid predeterminado es lista (imagen pequeña + nombre + rating + precio + botón). Ideal para comparar productos.</p>
+    </div>
+  </div>
+
+</div>

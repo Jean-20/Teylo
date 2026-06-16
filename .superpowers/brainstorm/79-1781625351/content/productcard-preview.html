@@ -1,0 +1,78 @@
+<h2>Así quedaría la ProductCard</h2>
+<p class="subtitle">Card actual vs card mejorada — con rating, badge de descuento y marca.</p>
+
+<div class="split">
+
+  <!-- ACTUAL -->
+  <div class="mockup">
+    <div class="mockup-header">Antes (actual)</div>
+    <div class="mockup-body" style="display:flex;justify-content:center;padding:20px">
+      <div style="width:180px;background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)">
+        <!-- Imagen -->
+        <div style="position:relative;background:#ede9fe;height:120px;overflow:hidden">
+          <div style="position:absolute;top:6px;right:6px;background:#7c3aed;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px">Nuevo</div>
+          <div style="position:absolute;bottom:6px;left:6px;background:rgba(255,255,255,.9);font-size:9px;color:#374151;padding:2px 6px;border-radius:20px">Arte & Dibujo</div>
+          <!-- sin badge descuento -->
+        </div>
+        <!-- Info -->
+        <div style="padding:10px;display:flex;justify-content:space-between;align-items:flex-end">
+          <div>
+            <!-- sin marca -->
+            <div style="font-size:12px;font-weight:600;color:#111">Cuaderno Premium</div>
+            <!-- sin rating -->
+            <div style="margin-top:4px;display:flex;align-items:center;gap:6px">
+              <span style="font-size:12px;font-weight:700;color:#111">S/34.90</span>
+              <span style="font-size:10px;color:#9ca3af;text-decoration:line-through">S/42.00</span>
+            </div>
+          </div>
+          <div style="width:30px;height:30px;background:#7c3aed;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0">🛒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEJORADA -->
+  <div class="mockup">
+    <div class="mockup-header">Después (mejorada)</div>
+    <div class="mockup-body" style="display:flex;justify-content:center;padding:20px">
+      <div style="width:180px;background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)">
+        <!-- Imagen -->
+        <div style="position:relative;background:#ede9fe;height:120px;overflow:hidden">
+          <div style="position:absolute;top:6px;right:6px;background:#7c3aed;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px">Nuevo</div>
+          <!-- Badge descuento NUEVO -->
+          <div style="position:absolute;top:6px;left:6px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px">-17%</div>
+          <div style="position:absolute;bottom:6px;left:6px;background:rgba(255,255,255,.9);font-size:9px;color:#374151;padding:2px 6px;border-radius:20px">Arte & Dibujo</div>
+        </div>
+        <!-- Info -->
+        <div style="padding:10px;display:flex;justify-content:space-between;align-items:flex-end">
+          <div style="min-width:0">
+            <!-- Marca NUEVA -->
+            <div style="font-size:9px;color:#9ca3af;font-weight:500;margin-bottom:1px">Muji</div>
+            <div style="font-size:12px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Cuaderno Premium</div>
+            <!-- Rating NUEVO -->
+            <div style="display:flex;align-items:center;gap:3px;margin-top:2px">
+              <span style="color:#f59e0b;font-size:9px">★★★★☆</span>
+              <span style="font-size:9px;color:#9ca3af">(12)</span>
+            </div>
+            <div style="margin-top:3px;display:flex;align-items:center;gap:6px">
+              <span style="font-size:12px;font-weight:700;color:#7c3aed">S/34.90</span>
+              <span style="font-size:10px;color:#9ca3af;text-decoration:line-through">S/42.00</span>
+            </div>
+          </div>
+          <div style="width:30px;height:30px;background:#7c3aed;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;flex-shrink:0">🛒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#f8f7ff;border-radius:8px;border:1px solid #ede9fe">
+  <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:8px">Resumen de cambios en ProductCard</div>
+  <ul style="font-size:12px;color:#6b7280;line-height:1.8;margin:0;padding-left:16px">
+    <li><strong style="color:#7c3aed">Badge -X%</strong> arriba a la izquierda sobre la imagen (solo si hay originalPrice)</li>
+    <li><strong style="color:#7c3aed">Marca</strong> en gris pequeño encima del nombre del producto</li>
+    <li><strong style="color:#f59e0b">★ Rating</strong> + número de reviews bajo el nombre</li>
+    <li>Precio actual en color primario (más visible)</li>
+  </ul>
+</div>
