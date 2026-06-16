@@ -9,9 +9,7 @@ import useAuthStore from '../../store/authStore.js'
 import useCartStore from '../../store/cartStore.js'
 import useWishlistStore from '../../store/wishlistStore.js'
 
-// showDescription=false → tarjeta de catálogo (solo nombre + precio)
-// showDescription=true  → tarjeta de productos (con descripción)
-export default function ProductCard({ product, showDescription = false }) {
+export default function ProductCard({ product }) {
   const { isAuthenticated } = useAuthStore()
   const { incrementCount } = useCartStore()
   const { isWishlisted, toggle } = useWishlistStore()
@@ -21,6 +19,10 @@ export default function ProductCard({ product, showDescription = false }) {
 
   const wishlisted = isWishlisted(product.id)
 
+  const discount = product.originalPrice
+    ? Math.round((1 - product.price / product.originalPrice) * 100)
+    : 0
+
   const handleAddToCart = async (e) => {
     e.preventDefault()
     if (!isAuthenticated) return navigate('/login')
@@ -28,25 +30,20 @@ export default function ProductCard({ product, showDescription = false }) {
     try {
       await addToCart(product.id, 1)
       incrementCount()
-    } catch {
-      // silencioso — el usuario verá el carrito sin cambios
-    } finally {
-      setAddingCart(false)
-    }
+    } catch {}
+    finally { setAddingCart(false) }
   }
 
   const handleWishlist = async (e) => {
     e.preventDefault()
     if (!isAuthenticated) return navigate('/login')
-    toggle(product.id)           // optimista
+    toggle(product.id)
     try {
       await toggleWishlist(product.id)
     } catch {
-      toggle(product.id)         // revertir si falla
+      toggle(product.id)
     }
   }
-
-  const categoryName = product.category?.name
 
   return (
     <Link to={`/productos/${product.slug}`} className="group block">
@@ -67,48 +64,60 @@ export default function ProductCard({ product, showDescription = false }) {
             </div>
           )}
 
-          {/* Badge "Nuevo" */}
+          {/* Badge descuento — arriba izquierda */}
+          {discount >= 5 && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
+              -{discount}%
+            </span>
+          )}
+
+          {/* Badge Nuevo — arriba derecha */}
           {product.isNew && (
             <span className="absolute top-2 right-2 bg-primary text-white text-[10px] font-semibold px-2 py-0.5 rounded">
               Nuevo
             </span>
           )}
 
-          {/* Badge categoría */}
-          {categoryName && (
+          {/* Badge categoría — abajo izquierda */}
+          {product.category?.name && (
             <span className="absolute bottom-2 left-2 bg-white/90 text-gray-carbon text-[10px] px-2 py-0.5 rounded-full">
-              {categoryName}
+              {product.category.name}
             </span>
           )}
 
-          {/* Corazón wishlist */}
+          {/* Corazón wishlist — abajo derecha */}
           <button
             onClick={handleWishlist}
-            className="absolute top-2 left-2 p-1.5 rounded-full bg-white/80 hover:bg-white transition opacity-0 group-hover:opacity-100"
+            className="absolute bottom-2 right-2 p-1.5 rounded-full bg-white/80 hover:bg-white transition opacity-0 group-hover:opacity-100"
             title={wishlisted ? 'Quitar de favoritos' : 'Agregar a favoritos'}
           >
-            <Heart
-              className={`w-3.5 h-3.5 ${wishlisted ? 'fill-primary text-primary' : 'text-gray-carbon'}`}
-            />
+            <Heart className={`w-3.5 h-3.5 ${wishlisted ? 'fill-primary text-primary' : 'text-gray-carbon'}`} />
           </button>
         </div>
 
         {/* Info */}
         <div className="p-3 flex items-end justify-between gap-2">
           <div className="min-w-0">
+            {product.brand?.name && (
+              <p className="text-[10px] text-gray-400 font-medium mb-0.5">{product.brand.name}</p>
+            )}
             <p className="font-semibold text-sm text-gray-carbon truncate">{product.name}</p>
-            {showDescription && product.description && (
-              <p className="text-xs text-gray-400 mt-0.5 line-clamp-2">{product.description}</p>
+            {product.reviewCount > 0 && (
+              <div className="flex items-center gap-1 mt-0.5">
+                <span className="text-yellow-400 text-xs leading-none">
+                  {'★'.repeat(Math.round(product.avgRating))}{'☆'.repeat(5 - Math.round(product.avgRating))}
+                </span>
+                <span className="text-[10px] text-gray-400">({product.reviewCount})</span>
+              </div>
             )}
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-sm font-bold text-gray-carbon">{formatPrice(product.price)}</span>
+              <span className="text-sm font-bold text-primary">{formatPrice(product.price)}</span>
               {product.originalPrice && (
                 <span className="text-xs text-gray-400 line-through">{formatPrice(product.originalPrice)}</span>
               )}
             </div>
           </div>
 
-          {/* Botón carrito */}
           <button
             onClick={handleAddToCart}
             disabled={addingCart}
