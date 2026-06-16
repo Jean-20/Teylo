@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Star, SlidersHorizontal, LayoutGrid, List, ShoppingCart, Package } from 'lucide-react'
 import { getProducts } from '../api/products.js'
@@ -111,25 +111,32 @@ export default function Productos() {
     setSearchParams(p)
   }
 
-  const fetchProducts = useCallback(async () => {
+  useEffect(() => {
+    const controller = new AbortController()
     setLoading(true)
-    try {
-      const params = {
-        sort, page, limit: 9,
-        ...(brand && { brand }),
-        maxPrice,
-        ...(minRating > 0 && { rating: minRating }),
-        ...(category && { category }),
-      }
-      const { data } = await getProducts(params)
-      setProducts(data.data.products)
-      setTotal(data.data.total)
-      setTotalPages(data.data.totalPages)
-    } catch { setProducts([]) }
-    finally { setLoading(false) }
+    const params = {
+      sort, page, limit: 9,
+      ...(brand && { brand }),
+      maxPrice,
+      ...(minRating > 0 && { rating: minRating }),
+      ...(category && { category }),
+    }
+    getProducts(params)
+      .then(({ data }) => {
+        if (!controller.signal.aborted) {
+          setProducts(data.data.products)
+          setTotal(data.data.total)
+          setTotalPages(data.data.totalPages)
+        }
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setProducts([])
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false)
+      })
+    return () => controller.abort()
   }, [brand, maxPrice, minRating, sort, page, category])
-
-  useEffect(() => { fetchProducts() }, [fetchProducts])
   useEffect(() => {
     getBrands().then(({ data }) => setBrands(data.data))
   }, [])
