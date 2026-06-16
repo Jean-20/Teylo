@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { ChevronRight, Package } from 'lucide-react'
 import { getProducts } from '../api/products.js'
 import { getCategories } from '../api/categories.js'
@@ -7,27 +7,44 @@ import { getImageUrl } from '../utils/getImageUrl.js'
 import ProductCard from '../components/ui/ProductCard.jsx'
 
 export default function Catalogo() {
+  const [searchParams] = useSearchParams()
   const [categories, setCategories] = useState([])
   const [activeSlug, setActiveSlug] = useState('')
   const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [imgErrors, setImgErrors] = useState(new Set())
 
   useEffect(() => {
-    getCategories().then(({ data }) => {
-      const parents = data.data.filter((c) => c.parentId === null)
-      setCategories(parents)
-      if (parents.length > 0) setActiveSlug(parents[0].slug)
-    })
+    const paramSlug = searchParams.get('category') || ''
+    getCategories()
+      .then(({ data }) => {
+        const parents = data.data.filter((c) => c.parentId === null)
+        setCategories(parents)
+        setImgErrors(new Set())
+        if (paramSlug && parents.some((c) => c.slug === paramSlug)) {
+          setActiveSlug(paramSlug)
+        } else if (parents.length > 0) {
+          setActiveSlug(parents[0].slug)
+        }
+      })
+      .catch(() => setLoading(false))
   }, [])
 
   useEffect(() => {
     if (!activeSlug) return
+    const controller = new AbortController()
     setLoading(true)
     getProducts({ category: activeSlug, limit: 9, sort: 'recent' })
-      .then(({ data }) => setProducts(data.data.products))
-      .catch(() => setProducts([]))
-      .finally(() => setLoading(false))
+      .then(({ data }) => {
+        if (!controller.signal.aborted) setProducts(data.data.products)
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setProducts([])
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false)
+      })
+    return () => controller.abort()
   }, [activeSlug])
 
   const activeCategory = categories.find((c) => c.slug === activeSlug)
@@ -54,7 +71,7 @@ export default function Catalogo() {
                       src={getImageUrl(cat.imageUrl)}
                       alt={cat.name}
                       className="w-8 h-8 rounded object-cover shrink-0"
-                      onError={() => setImgErrors((prev) => new Set([...prev, cat.slug]))}
+                      onError={() => setImgErrors((prev) => { const s = new Set(prev); s.add(cat.slug); return s })}
                     />
                   ) : (
                     <div className="w-8 h-8 rounded bg-gray-soft shrink-0 flex items-center justify-center">
